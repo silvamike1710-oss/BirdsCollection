@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Passarinhos de Santa Maria - Coleção</title>
+
+  <!-- =====================================================
+       ESTILO GERAL - Windows 95 / 98 Visual Theme
+       Características principais do Win95:
+       - Fundo cinza (#c0c0c0)
+       - Bordas com efeito "raised" (claro em cima/esquerda, escuro em baixo/direita)
+       - Fonte: MS Sans Serif / Arial pequena
+       - Barra de título azul com botões de fechar/minimizar
+  ===================================================== -->
+  <style>
+    /* ---- Reset básico ---- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ---- Fonte do Win95 (Arial pequena como fallback) ---- */
+    body {
+      font-family: "MS Sans Serif", "Arial", sans-serif;
+      font-size: 11px;
+      background-color: #008080; /* Fundo teal clássico do Windows 95 */
+      background-image:
+        /* Padrão de "papéis" espalhados, estético Win95 */
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 2px,
+          rgba(0,0,0,0.03) 2px,
+          rgba(0,0,0,0.03) 4px
+        );
+      min-height: 100vh;
+      padding: 8px;
+    }
+
+    /* ====================================================
+         COMPONENTE: Janela Win95
+         Estrutura de uma janela típica:
+           .win-window        → a janela inteira
+           .win-titlebar      → barra azul do topo
+           .win-menubar       → barra de menus (Arquivo, Editar...)
+           .win-body          → conteúdo da janela
+    ==================================================== */
+
+    /* A janela principal - efeito "raised" com bordas */
+    .win-window {
+      background-color: #c0c0c0;
+      /* Borda raised: claro no topo/esquerda, escuro no fundo/direita */
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-bottom: 2px solid #404040;
+      border-right: 2px solid #404040;
+      /* Borda interna adicional para profundidade */
+      box-shadow: 1px 1px 0 #808080 inset, -1px -1px 0 #dfdfdf inset;
+      max-width: 900px;
+      margin: 0 auto 16px auto;
+    }
+
+    /* Barra de título azul */
+    .win-titlebar {
+      background: linear-gradient(to right, #000080, #1084d0);
+      padding: 3px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+
+    .win-titlebar-text {
+      color: white;
+      font-weight: bold;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Ícone na barra de título */
+    .win-titlebar-icon {
+      width: 14px;
+      height: 14px;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    /* Botões da barra de título (_, [], X) */
+    .win-titlebar-buttons {
+      display: flex;
+      gap: 2px;
+    }
+
+    .win-btn-title {
+      width: 16px;
+      height: 14px;
+      background: #c0c0c0;
+      border-top: 1px solid #ffffff;
+      border-left: 1px solid #ffffff;
+      border-bottom: 1px solid #404040;
+      border-right: 1px solid #404040;
+      font-size: 9px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000000;
+    }
+
+    .win-btn-title:active {
+      /* Inverte o efeito raised ao clicar = efeito "pressed" */
+      border-top: 1px solid #404040;
+      border-left: 1px solid #404040;
+      border-bottom: 1px solid #ffffff;
+      border-right: 1px solid #ffffff;
+    }
+
+    /* Barra de menus */
+    .win-menubar {
+      background: #c0c0c0;
+      padding: 2px 4px;
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid #808080;
+    }
+
+    .win-menu-item {
+      padding: 2px 8px;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .win-menu-item:hover {
+      background: #000080;
+      color: white;
+    }
+
+    /* Área de conteúdo da janela */
+    .win-body {
+      padding: 8px;
+    }
+
+    /* ====================================================
+         COMPONENTE: Painel com borda "sunken" (afundado)
+         Usado para áreas de texto/display, oposto do raised.
+    ==================================================== */
+    .win-panel-sunken {
+      border-top: 2px solid #808080;
+      border-left: 2px solid #808080;
+      border-bottom: 2px solid #ffffff;
+      border-right: 2px solid #ffffff;
+      background: #c0c0c0;
+      padding: 6px;
+    }
+
+    /* Painel de exibição (como área de texto read-only no Win95) */
+    .win-display {
+      border-top: 1px solid #808080;
+      border-left: 1px solid #808080;
+      border-bottom: 1px solid #ffffff;
+      border-right: 1px solid #ffffff;
+      background: white;
+      padding: 4px 6px;
+      font-size: 11px;
+    }
+
+    /* ====================================================
+         COMPONENTE: Barra de status (rodapé da janela)
+    ==================================================== */
+    .win-statusbar {
+      background: #c0c0c0;
+      border-top: 1px solid #808080;
+      padding: 2px 6px;
+      display: flex;
+      gap: 4px;
+      font-size: 11px;
+    }
+
+    .win-statusbar-panel {
+      border-top: 1px solid #808080;
+      border-left: 1px solid #808080;
+      border-bottom: 1px solid #ffffff;
+      border-right: 1px solid #ffffff;
+      padding: 1px 6px;
+      min-width: 80px;
+    }
+
+    /* ====================================================
+         COMPONENTE: Botão Win95
+         Efeito raised padrão, pressed ao clicar.
+    ==================================================== */
+    .win-button {
+      background: #c0c0c0;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-bottom: 2px solid #404040;
+      border-right: 2px solid #404040;
+      padding: 4px 14px;
+      font-family: "MS Sans Serif", Arial, sans-serif;
+      font-size: 11px;
+      cursor: pointer;
+      min-width: 75px;
+    }
+
+    .win-button:active {
+      border-top: 2px solid #404040;
+      border-left: 2px solid #404040;
+      border-bottom: 2px solid #ffffff;
+      border-right: 2px solid #ffffff;
+      padding-top: 5px;
+      padding-left: 15px;
+    }
+
+    .win-button:focus {
+      outline: 1px dotted black;
+      outline-offset: -4px;
+    }
+
+    /* Botão padrão (azul com pontilhado ao redor) */
+    .win-button-default {
+      box-shadow: 0 0 0 1px black;
+    }
+
+    /* ====================================================
+         SEÇÃO: Barra de progresso Win95
+    ==================================================== */
+    .win-progress-container {
+      border-top: 1px solid #808080;
+      border-left: 1px solid #808080;
+      border-bottom: 1px solid #ffffff;
+      border-right: 1px solid #ffffff;
+      background: white;
+      height: 16px;
+      overflow: hidden;
+    }
+
+    .win-progress-bar {
+      height: 100%;
+      /* Blocos azuis clássicos do Win95 (segmented) */
+      background: repeating-linear-gradient(
+        to right,
+        #000080 0px,
+        #000080 8px,
+        #c0c0c0 8px,
+        #c0c0c0 10px
+      );
+      transition: width 0.4s ease;
+    }
+
+    /* ====================================================
+         SEÇÃO: Grade de cards de pássaros
+    ==================================================== */
+    .birds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 4px;
+      padding: 4px;
+    }
+
+    /* Card individual de pássaro */
+    .bird-card {
+      background: #c0c0c0;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-bottom: 2px solid #404040;
+      border-right: 2px solid #404040;
+      cursor: pointer;
+      text-align: center;
+      padding: 4px;
+      transition: none; /* Win95 não tem transições suaves! */
+      position: relative;
+    }
+
+    .bird-card:hover {
+      background: #d4d0c8;
+    }
+
+    /* Estado "pressed" ao clicar no card */
+    .bird-card:active {
+      border-top: 2px solid #404040;
+      border-left: 2px solid #404040;
+      border-bottom: 2px solid #ffffff;
+      border-right: 2px solid #ffffff;
+    }
+
+    /* Contêiner da imagem do pássaro */
+    .bird-img-wrapper {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 4px auto;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #808080;
+    }
+
+    /* Imagem do pássaro - vinda do Wikimedia via URL da espécie */
+    .bird-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ---- Estado: NÃO encontrado ----
+         A imagem fica em escala de cinza + escurecida */
+    .bird-card.not-found .bird-img {
+      filter: grayscale(100%) brightness(0.5);
+    }
+
+    /* ---- Estado: ENCONTRADO ----
+         Badge verde no canto superior direito */
+    .bird-card.found .bird-img {
+      filter: none; /* Imagem colorida! */
+    }
+
+    /* Badge de "encontrado" (checkmark verde) */
+    .found-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: #00aa00;
+      color: white;
+      font-size: 9px;
+      font-weight: bold;
+      width: 14px;
+      height: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Borda raised para o badge */
+      border-top: 1px solid #00ff00;
+      border-left: 1px solid #00ff00;
+      border-bottom: 1px solid #006600;
+      border-right: 1px solid #006600;
+    }
+
+    /* Ocultar badge quando não encontrado */
+    .bird-card.not-found .found-badge {
+      display: none;
+    }
+
+    /* Nome do pássaro no card */
+    .bird-name {
+      font-size: 9px;
+      font-weight: bold;
+      color: #000000;
+      line-height: 1.2;
+      word-break: break-word;
+      hyphens: auto;
+    }
+
+    /* Indicador de raridade (estrelinhas) */
+    .bird-rarity {
+      font-size: 9px;
+      color: #808000; /* Amarelo escuro, estilo Win95 */
+      margin-top: 2px;
+    }
+
+    /* Pontos do card */
+    .bird-points-badge {
+      font-size: 8px;
+      color: #000080;
+      margin-top: 1px;
+    }
+
+    /* ====================================================
+         MODAL: Janela de detalhe do pássaro
+         Janela "filha" flutuante no estilo Win95
+    ==================================================== */
+    .modal-overlay {
+      display: none; /* Oculto por padrão */
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      /* Win95 não usa overlay escuro - usa padrão de pontilhado */
+      background: rgba(0,0,0,0.3);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Quando ativo, usar flex para centralizar */
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    /* A janela modal em si */
+    .modal-window {
+      background: #c0c0c0;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-bottom: 2px solid #404040;
+      border-right: 2px solid #404040;
+      width: 480px;
+      max-width: 95vw;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.5); /* Sombra dura, Win95 style */
+    }
+
+    /* Layout interno do modal */
+    .modal-content {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Área superior: imagem + info básica lado a lado */
+    .modal-top {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Imagem grande no modal */
+    .modal-img-frame {
+      border-top: 2px solid #808080;
+      border-left: 2px solid #808080;
+      border-bottom: 2px solid #ffffff;
+      border-right: 2px solid #ffffff;
+      width: 160px;
+      height: 140px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .modal-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Pássaro não encontrado no modal: imagem cinza */
+    .modal-img.not-found-img {
+      filter: grayscale(100%) brightness(0.5);
+    }
+
+    /* Área de texto de informações */
+    .modal-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .modal-bird-name {
+      font-size: 14px;
+      font-weight: bold;
+      color: #000080;
+      border-bottom: 1px solid #808080;
+      padding-bottom: 4px;
+    }
+
+    .modal-scientific {
+      font-style: italic;
+      font-size: 10px;
+      color: #444444;
+    }
+
+    .modal-rarity-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .rarity-label {
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    .rarity-stars {
+      color: #808000;
+      font-size: 12px;
+    }
+
+    .points-display {
+      background: #000080;
+      color: white;
+      font-size: 10px;
+      padding: 1px 6px;
+      font-weight: bold;
+    }
+
+    /* Área de descrição (campo de texto estilo Win95) */
+    .modal-description {
+      border-top: 2px solid #808080;
+      border-left: 2px solid #808080;
+      border-bottom: 2px solid #ffffff;
+      border-right: 2px solid #ffffff;
+      background: white;
+      padding: 6px;
+      font-size: 11px;
+      line-height: 1.5;
+      max-height: 100px;
+      overflow-y: auto;
+    }
+
+    /* Onde encontrar (segundo campo de texto) */
+    .modal-where {
+      border-top: 2px solid #808080;
+      border-left: 2px solid #808080;
+      border-bottom: 2px solid #ffffff;
+      border-right: 2px solid #ffffff;
+      background: #ffffc0; /* Amarelo claro, como sticky note */
+      padding: 6px;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .modal-where-label {
+      font-weight: bold;
+      color: #800000;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* Botões do modal */
+    .modal-buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      padding: 4px;
+    }
+
+    /* ====================================================
+         SEÇÃO: Painel de estatísticas (topo do app)
+    ==================================================== */
+    .stats-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .stat-box {
+      border-top: 2px solid #808080;
+      border-left: 2px solid #808080;
+      border-bottom: 2px solid #ffffff;
+      border-right: 2px solid #ffffff;
+      background: white;
+      padding: 4px 10px;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .stat-label {
+      font-size: 9px;
+      color: #808080;
+      display: block;
+    }
+
+    .stat-value {
+      font-size: 16px;
+      font-weight: bold;
+      color: #000080;
+      display: block;
+    }
+
+    /* ====================================================
+         SEÇÃO: Filtros (abas/radio buttons)
+    ==================================================== */
+    .filter-bar {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: #c0c0c0;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-bottom: 2px solid #404040;
+      border-right: 2px solid #404040;
+      padding: 3px 10px;
+      font-family: "MS Sans Serif", Arial, sans-serif;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      /* Botão pressionado = selecionado */
+      border-top: 2px solid #404040;
+      border-left: 2px solid #404040;
+      border-bottom: 2px solid #ffffff;
+      border-right: 2px solid #ffffff;
+      background: #a0a0a0;
+    }
+
+    /* ====================================================
+         SEÇÃO: Tela de vitória
+    ==================================================== */
+    .win-screen {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .win-screen.active {
+      display: block;
+    }
+
+    .win-screen-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #000080;
+      margin-bottom: 12px;
+    }
+
+    /* ====================================================
+         TOOLTIP de raridade (legenda)
+    ==================================================== */
+    .rarity-legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 4px 0;
+      font-size: 10px;
+    }
+
+    .rarity-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    /* Scrollbar estilo Win95 */
+    ::-webkit-scrollbar {
+      width: 16px;
+      height: 16px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #c0c0c0;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #c0c0c0;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-bottom: 2px solid #404040;
+      border-right: 2px solid #404040;
+    }
+
+    ::-webkit-scrollbar-button {
+      background: #c0c0c0;
+      height: 16px;
+      width: 16px;
+    }
+
+    /* Separador horizontal Win95 */
+    .win-separator {
+      border: none;
+      border-top: 1px solid #808080;
+      border-bottom: 1px solid #ffffff;
+      margin: 4px 0;
+    }
+
+    /* Ícone de "arquivo não encontrado" para imagens com erro */
+    .img-error-placeholder {
+      width: 100%;
+      height: 100%;
+      background: #c0c0c0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #808080;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =====================================================
+       JANELA PRINCIPAL DO APLICATIVO
+  ===================================================== -->
+  <div class="win-window" id="main-window">
+
+    <!-- Barra de título azul -->
+    <div class="win-titlebar">
+      <div class="win-titlebar-text">
+        <span class="win-titlebar-icon">🐦</span>
+        Passarinhos de Santa Maria - Colecionador v1.0
+      </div>
+      <div class="win-titlebar-buttons">
+        <button class="win-btn-title" title="Minimizar">_</button>
+        <button class="win-btn-title" title="Maximizar">□</button>
+        <button class="win-btn-title" title="Fechar">✕</button>
+      </div>
+    </div>
+
+    <!-- Barra de menus -->
+    <div class="win-menubar">
+      <span class="win-menu-item">Arquivo</span>
+      <span class="win-menu-item">Editar</span>
+      <span class="win-menu-item" id="menu-reset" onclick="resetGame()">Reiniciar</span>
+      <span class="win-menu-item">Ajuda</span>
+    </div>
+
+    <!-- Conteúdo principal -->
+    <div class="win-body">
+
+      <!-- ---- Painel de estatísticas ---- -->
+      <div class="win-panel-sunken" style="margin-bottom:8px;">
+        <div class="stats-row">
+          <!-- Pássaros encontrados / total -->
+          <div class="stat-box">
+            <span class="stat-label">Encontrados</span>
+            <span class="stat-value" id="counter">0 / 36</span>
+          </div>
+          <!-- Pontuação total -->
+          <div class="stat-box">
+            <span class="stat-label">Pontuação</span>
+            <span class="stat-value" id="score">0</span>
+          </div>
+          <!-- Pontuação máxima possível -->
+          <div class="stat-box">
+            <span class="stat-label">Máximo</span>
+            <span class="stat-value" id="max-score">0</span>
+          </div>
+        </div>
+
+        <!-- Barra de progresso -->
+        <div style="margin-top:6px;">
+          <div style="font-size:10px; margin-bottom:2px;">Progresso:</div>
+          <div class="win-progress-container">
+            <div class="win-progress-bar" id="progress-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---- Legenda de raridade ---- -->
+      <div class="win-panel-sunken" style="margin-bottom:8px;">
+        <div style="font-size:10px; font-weight:bold; margin-bottom:3px;">Raridade:</div>
+        <div class="rarity-legend">
+          <div class="rarity-legend-item">
+            <span style="color:#808000;">★</span> Comum (5 pts)
+          </div>
+          <div class="rarity-legend-item">
+            <span style="color:#808000;">★★</span> Incomum (10 pts)
+          </div>
+          <div class="rarity-legend-item">
+            <span style="color:#808000;">★★★</span> Moderado (20 pts)
+          </div>
+          <div class="rarity-legend-item">
+            <span style="color:#808000;">★★★★</span> Raro (35 pts)
+          </div>
+          <div class="rarity-legend-item">
+            <span style="color:#808000;">★★★★★</span> Muito raro (50 pts)
+          </div>
+        </div>
+      </div>
+
+      <!-- ---- Barra de filtros ---- -->
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="setFilter('all', this)">Todos</button>
+        <button class="filter-btn" onclick="setFilter('found', this)">✔ Encontrados</button>
+        <button class="filter-btn" onclick="setFilter('notfound', this)">? Não encontrados</button>
+        <button class="filter-btn" onclick="setFilter('city', this)">🌳 Cidade</button>
+        <button class="filter-btn" onclick="setFilter('rural', this)">🌾 Rural</button>
+        <button class="filter-btn" onclick="setFilter('water', this)">💧 Água</button>
+      </div>
+
+      <!-- ---- Grade de cards de pássaros ---- -->
+      <div class="birds-grid" id="birds-grid">
+        <!-- Os cards são gerados pelo JavaScript -->
+      </div>
+
+      <!-- ---- Tela de vitória (oculta até completar) ---- -->
+      <div class="win-screen" id="win-screen">
+        <div class="win-screen-title">🎉 Parabéns! 🎉</div>
+        <div class="win-panel-sunken" style="max-width:300px; margin:0 auto;">
+          <p style="font-size:13px; margin-bottom:8px;">
+            Você encontrou todos os pássaros de Santa Maria!
+          </p>
+          <p style="font-size:11px; color:#000080;">
+            Pontuação final: <strong id="final-score">0</strong>
+          </p>
+        </div>
+        <div style="margin-top:12px;">
+          <button class="win-button win-button-default" onclick="resetGame()">
+            Jogar novamente
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /win-body -->
+
+    <!-- Barra de status no rodapé -->
+    <div class="win-statusbar">
+      <div class="win-statusbar-panel" id="status-text">
+        Clique em um pássaro para ver detalhes
+      </div>
+      <div class="win-statusbar-panel">
+        Santa Maria, RS
+      </div>
+      <div class="win-statusbar-panel" id="status-filter">
+        Filtro: Todos
+      </div>
+    </div>
+
+  </div><!-- /win-window -->
+
+
+  <!-- =====================================================
+       MODAL: Janela de detalhes do pássaro
+       Aparece ao clicar em qualquer card
+  ===================================================== -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-window">
+
+      <!-- Barra de título da janela modal -->
+      <div class="win-titlebar">
+        <div class="win-titlebar-text">
+          <span class="win-titlebar-icon">🔍</span>
+          <span id="modal-title-text">Detalhes do Pássaro</span>
+        </div>
+        <div class="win-titlebar-buttons">
+          <button class="win-btn-title" onclick="closeModalBtn()">✕</button>
+        </div>
+      </div>
+
+      <!-- Conteúdo do modal -->
+      <div class="modal-content">
+
+        <!-- Linha superior: imagem + info básica -->
+        <div class="modal-top">
+          <div class="modal-img-frame">
+            <img id="modal-img" class="modal-img" src="" alt="" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="img-error-placeholder" style="display:none;">🐦</div>
+          </div>
+          <div class="modal-info">
+            <div class="modal-bird-name" id="modal-name">—</div>
+            <div class="modal-scientific" id="modal-scientific">—</div>
+            <hr class="win-separator">
+            <div class="modal-rarity-line">
+              <span class="rarity-label">Raridade:</span>
+              <span class="rarity-stars" id="modal-rarity-stars">—</span>
+            </div>
+            <div class="modal-rarity-line">
+              <span class="rarity-label">Pontos:</span>
+              <span class="points-display" id="modal-points">—</span>
+            </div>
+            <div class="modal-rarity-line" id="modal-found-status" style="margin-top:8px;">
+              — 
+            </div>
+          </div>
+        </div>
+
+        <!-- Descrição do pássaro -->
+        <div>
+          <div style="font-size:10px; font-weight:bold; margin-bottom:2px;">Sobre:</div>
+          <div class="modal-description" id="modal-description">—</div>
+        </div>
+
+        <!-- Onde encontrar -->
+        <div>
+          <div class="modal-where">
+            <span class="modal-where-label">📍 Onde encontrar em Santa Maria:</span>
+            <span id="modal-where">—</span>
+          </div>
+        </div>
+
+        <!-- Botões de ação -->
+        <div class="modal-buttons">
+          <!-- Botão de marcar como encontrado (principal) -->
+          <button class="win-button win-button-default" id="modal-find-btn" onclick="toggleFound()">
+            ✔ Marcar como encontrado
+          </button>
+          <!-- Botão de fechar -->
+          <button class="win-button" onclick="closeModalBtn()">
+            Fechar
+          </button>
+        </div>
+
+      </div><!-- /modal-content -->
+    </div><!-- /modal-window -->
+  </div><!-- /modal-overlay -->
+
+
+  <!-- =====================================================
+       JAVASCRIPT: Toda a lógica do jogo
+  ===================================================== -->
+  <script>
+
+    // ==========================================================
+    // DADOS: Lista de todos os pássaros
+    //
+    // Cada pássaro tem:
+    //   name       → nome popular
+    //   scientific → nome científico
+    //   rarity     → raridade de 1 (comum) a 5 (muito raro)
+    //   points     → pontos ganhos ao encontrar
+    //   habitat    → categoria para o filtro
+    //   where      → onde encontrar (do seu texto)
+    //   description → curiosidades sobre o pássaro
+    //   img        → URL de imagem do Wikimedia Commons (domínio público)
+    // ==========================================================
+    const BIRDS = [
+      {
+        name: "Quero-quero",
+        scientific: "Vanellus chilensis",
+        rarity: 1,
+        points: 5,
+        habitat: "rural",
+        where: "Campos, gramados, parques, terrenos baldios, beira de estrada e áreas rurais",
+        description: "Um dos pássaros mais conhecidos do Brasil! O quero-quero é famoso pelo seu grito alto e insistente ('quero-quero!') que usa para defender o território. Tem um espinho vermelho na asa que usa como arma. Faz o ninho no chão e é muito agressivo com intrusos, inclusive humanos e animais maiores.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Vanellus_chilensis_-_Chile.jpg/320px-Vanellus_chilensis_-_Chile.jpg"
+      },
+      {
+        name: "João-de-barro",
+        scientific: "Furnarius rufus",
+        rarity: 1,
+        points: 5,
+        habitat: "city",
+        where: "Postes, cercas, árvores isoladas, fazendas, bairros com jardins",
+        description: "O pássaro símbolo do Brasil! Constrói seu ninho de barro em forma de forno (por isso 'João-de-barro'), com uma entrada curva que confunde predadores. Cada casal constrói um novo ninho por ano. É monogâmico e trabalha em parceria — a palavra 'joão-de-barro' virou sinônimo de trabalhador dedicado.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Furnarius_rufus_-_Ovenbird.jpg/320px-Furnarius_rufus_-_Ovenbird.jpg"
+      },
+      {
+        name: "Bem-te-vi",
+        scientific: "Pitangus sulphuratus",
+        rarity: 1,
+        points: 5,
+        habitat: "city",
+        where: "Fios elétricos, árvores, praças, quintais e beira de rios",
+        description: "O bem-te-vi é um dos pássaros mais populares do Brasil, famoso pelo seu canto onomatopaico 'bem-te-vi!'. É um tirano corajoso: apesar de não ser grande, ataca cobras, lagartos e até aves maiores. Tem uma mancha amarela escondida na cabeça que só aparece em situações de excitação.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Pitangus_sulphuratus_-_Great_kiskadee_02.jpg/320px-Pitangus_sulphuratus_-_Great_kiskadee_02.jpg"
+      },
+      {
+        name: "Sabiá-laranjeira",
+        scientific: "Turdus rufiventris",
+        rarity: 1,
+        points: 5,
+        habitat: "city",
+        where: "Jardins, praças, árvores frutíferas e bordas de mata",
+        description: "O sabiá-laranjeira é o pássaro nacional do Brasil! Tem um dos cantos mais belos entre os pássaros brasileiros — melodioso e variado. Imortalizado no poema 'Canção do Exílio' de Gonçalves Dias. Alimenta-se principalmente de frutas e minhocas. O macho tem peito laranja vivo, como o nome sugere.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Turdus_rufiventris_Struecker.jpg/320px-Turdus_rufiventris_Struecker.jpg"
+      },
+      {
+        name: "Rolinha-roxa",
+        scientific: "Columbina talpacoti",
+        rarity: 1,
+        points: 5,
+        habitat: "city",
+        where: "Quintais, calçadas, terrenos com sementes e áreas abertas",
+        description: "Pequena e graciosa, a rolinha-roxa é uma das pombas menores mais comuns do Sul do Brasil. Caminha pelo chão em busca de sementes e forragem. O macho tem cor marrom-avermelhada bonita. Faz um ninho frágil de gravetos e coloca apenas 2 ovos. Seu arulho suave é característico das manhãs de quintal.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Ruddy_Ground_Dove_%28Columbina_talpacoti%29.jpg/320px-Ruddy_Ground_Dove_%28Columbina_talpacoti%29.jpg"
+      },
+      {
+        name: "Pardal",
+        scientific: "Passer domesticus",
+        rarity: 1,
+        points: 5,
+        habitat: "city",
+        where: "Centro da cidade, telhados, mercados, restaurantes e casas",
+        description: "Originário da Europa, o pardal foi introduzido no Brasil em 1906 no Rio de Janeiro. Hoje é encontrado em praticamente todas as cidades brasileiras. É extremamente adaptado à vida humana — vive em telhados, consome restos de comida e é muito agitado e social. O macho tem uma mancha preta no pescoço.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Passer_domesticus_male_%2815%29.jpg/320px-Passer_domesticus_male_%2815%29.jpg"
+      },
+      {
+        name: "Pombo-doméstico",
+        scientific: "Columba livia domestica",
+        rarity: 1,
+        points: 5,
+        habitat: "city",
+        where: "Áreas urbanas, prédios, praças e locais com grande circulação de pessoas",
+        description: "Domesticado há mais de 5.000 anos, o pombo-doméstico descende do pombo-das-rochas europeu. Tem excelente senso de orientação — eram usados como correio em guerras. Monogâmicos, formam casais duradouros. Apesar de controverso nas cidades, são aves inteligentes capazes de reconhecer rostos humanos.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Rock_pigeon_in_Washington_D.C.jpg/320px-Rock_pigeon_in_Washington_D.C.jpg"
+      },
+      {
+        name: "Coruja-buraqueira",
+        scientific: "Athene cunicularia",
+        rarity: 2,
+        points: 10,
+        habitat: "rural",
+        where: "Campos secos, terrenos abertos, pastagens e acostamentos",
+        description: "Diferente das outras corujas, a buraqueira é diurna e vive no chão! Escava tocas nos campos ou ocupa buracos abandonados de tatus. Tem pernas longas para correr pelo campo. Quando ameaçada, faz um som que imita o chocalho de cascavéis. Símbolo de muitas cidades do interior do Brasil.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Burrowing_Owl_on_pole_edit.jpg/320px-Burrowing_Owl_on_pole_edit.jpg"
+      },
+      {
+        name: "Anu-branco",
+        scientific: "Guira guira",
+        rarity: 1,
+        points: 5,
+        habitat: "rural",
+        where: "Campos, cercas, lavouras, beira de estradas e áreas rurais",
+        description: "O anu-branco é facilmente reconhecível pelo topete laranjado desgrenhado e plumagem com manchas brancas e marrons. Vive em grupos barulhentos e pratica 'nidificação comunal' — várias fêmeas colocam ovos no mesmo ninho e os cuidados são divididos pelo grupo. Come insetos, lagartos e até ovos de outros pássaros.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Guira_cuckoo_arp.jpg/320px-Guira_cuckoo_arp.jpg"
+      },
+      {
+        name: "Anu-preto",
+        scientific: "Crotophaga ani",
+        rarity: 1,
+        points: 5,
+        habitat: "rural",
+        where: "Capinzais, áreas rurais, matas abertas e pastagens",
+        description: "Completamente preto com brilho metálico, o anu-preto tem um bico alto e curvo característico. Como o anu-branco, vive em grupos e divide o ninho. É frequentemente visto seguindo atrás de gado, comendo insetos e carrapatos perturbados pelo pisoteio dos animais. Seu canto é uma série de assobios suaves.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Smooth-billed_ani_%28Crotophaga_ani%29_2.jpg/320px-Smooth-billed_ani_%28Crotophaga_ani%29_2.jpg"
+      },
+      {
+        name: "Tico-tico",
+        scientific: "Zonotrichia capensis",
+        rarity: 1,
+        points: 5,
+        habitat: "city",
+        where: "Jardins, quintais, parques, chão com folhas e arbustos",
+        description: "O tico-tico é um dos fringilídeos mais conhecidos do Brasil e um dos pássaros mais estudados do mundo! Tem um canto complexo e dialetos regionais — os pássaros de diferentes regiões cantam de forma ligeiramente diferente. Forrageiam no chão, fazendo movimentos de 'pular para trás' para virar folhas e encontrar sementes.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Rufous-collared_sparrow_%28Zonotrichia_capensis%29.jpg/320px-Rufous-collared_sparrow_%28Zonotrichia_capensis%29.jpg"
+      },
+      {
+        name: "Tesourinha",
+        scientific: "Tyrannus savana",
+        rarity: 2,
+        points: 10,
+        habitat: "rural",
+        where: "Campos, fios elétricos, áreas abertas e plantações",
+        description: "Impossível de confundir! O macho tem uma cauda enorme e bifurcada (a 'tesoura') que pode ter mais que o dobro do comprimento do corpo. É migratório — chega ao Sul do Brasil no verão para reproduzir e parte no inverno para a Amazônia ou Venezuela. Apesar da cauda espetacular, é um voador ágil que captura insetos em voo.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Fork-tailed_Flycatcher_%28Tyrannus_savana%29_male.jpg/320px-Fork-tailed_Flycatcher_%28Tyrannus_savana%29_male.jpg"
+      },
+      {
+        name: "Carcará",
+        scientific: "Caracara plancus",
+        rarity: 2,
+        points: 10,
+        habitat: "rural",
+        where: "Rodovias, fazendas, campos e áreas com gado",
+        description: "O carcará é uma ave de rapina oportunista e muito inteligente — come carniça, rouba presas de outras aves, persegue incêndios para capturar insetos fugindo do fogo, e até aprende a abrir cocos. É símbolo do Nordeste brasileiro. Tem a face nua laranja-avermelhada que varia de intensidade conforme o estado emocional.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Savanna_Hawk_-_Buteogallus_meridionalis%3B_Pantanal_IMG_1768_%2814706440556%29.jpg/320px-Savanna_Hawk_-_Buteogallus_meridionalis%3B_Pantanal_IMG_1768_%2814706440556%29.jpg"
+      },
+      {
+        name: "Sanhaço-cinzento",
+        scientific: "Thraupis sayaca",
+        rarity: 1,
+        points: 5,
+        habitat: "city",
+        where: "Árvores urbanas, jardins, praças e pomares",
+        description: "Um dos tanagras mais comuns do Brasil, o sanhaço-cinzento tem plumagem azul-acinzentada discreta mas elegante. É um importante dispersor de sementes — come frutas e espalha as sementes pelas fezes em diferentes locais. Frequentemente visita comedouros e tem um canto simples e repetitivo. Muito adaptado à cidade.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Thraupis_sayaca_-Brazil-8.jpg/320px-Thraupis_sayaca_-Brazil-8.jpg"
+      },
+      {
+        name: "Cambacica",
+        scientific: "Coereba flaveola",
+        rarity: 2,
+        points: 10,
+        habitat: "city",
+        where: "Jardins floridos, árvores com flores e bebedouros de beija-flor",
+        description: "Pequenina e esperta, a cambacica (ou sebinho) tem um bico fino e levemente curvo para furar pétalas de flores e roubar o néctar sem polinizar — é considerada uma 'ladrona de néctar'. Tem a barriga amarela viva e listras pretas e brancas na cabeça. Frequentemente aparece em bebedouros para beija-flores.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Bananaquit%2C_Tobago.jpg/320px-Bananaquit%2C_Tobago.jpg"
+      },
+      {
+        name: "Beija-flor",
+        scientific: "Trochilidae spp.",
+        rarity: 2,
+        points: 10,
+        habitat: "city",
+        where: "Flores de jardins, matas e áreas arborizadas",
+        description: "Os beija-flores são as únicas aves capazes de voar para trás! Batem as asas até 80 vezes por segundo e seu coração bate até 1.200 vezes por minuto em pleno voo. Para sobreviver à noite, entram em torpor (como uma mini-hibernação) para poupar energia. Em Santa Maria ocorrem várias espécies, especialmente o beija-flor-tesoura.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Eupetomena_macroura_-_Swallow-tailed_Hummingbird.jpg/320px-Eupetomena_macroura_-_Swallow-tailed_Hummingbird.jpg"
+      },
+      {
+        name: "Curicaca",
+        scientific: "Theristicus caudatus",
+        rarity: 2,
+        points: 10,
+        habitat: "rural",
+        where: "Campos, áreas rurais, banhados e árvores altas onde dormem",
+        description: "A curicaca é uma íbis de campos abertos, facilmente reconhecida pelo bico longo e curvo para baixo e pelo grasnido metálico e alto. Anda pelo campo sondando o solo em busca de minhocas, insetos e até lagartos. É monogâmica e os casais ficam juntos por anos. Dorme em árvores altas em grupos.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Curic%C3%A1ca_-_Theristicus_caudatus_%28Pantanal%29.jpg/320px-Curic%C3%A1ca_-_Theristicus_caudatus_%28Pantanal%29.jpg"
+      },
+      {
+        name: "Corruíra",
+        scientific: "Troglodytes musculus",
+        rarity: 1,
+        points: 5,
+        habitat: "city",
+        where: "Quintais, garagens, telhados, arbustos e cercas",
+        description: "Um dos menores pássaros do Brasil, mas com uma voz surpreendentemente potente e complexa! A corruíra é extremamente curiosa e ativa, e frequentemente se aventura dentro de casas, garagens e depósitos em busca de insetos. O macho constrói vários ninhos 'falsos' e deixa a fêmea escolher qual prefere.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Troglodytes_musculus_-_Southern_House_Wren.jpg/320px-Troglodytes_musculus_-_Southern_House_Wren.jpg"
+      },
+      {
+        name: "Canário-da-terra",
+        scientific: "Sicalis flaveola",
+        rarity: 1,
+        points: 5,
+        habitat: "rural",
+        where: "Campos, terrenos com gramíneas e beira de estrada",
+        description: "O canário-da-terra brasileiro — diferente do canário europeu — tem plumagem amarela viva no macho. É muito popular como pássaro de gaiola no Brasil, o que levou a problemas de tráfico de animais silvestres. Na natureza vive em campos abertos e come principalmente sementes de gramíneas. Tem um canto melodioso e vibrante.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Sicalis_flaveola_-Brazil-8.jpg/320px-Sicalis_flaveola_-Brazil-8.jpg"
+      },
+      {
+        name: "Chopim",
+        scientific: "Molothrus bonariensis",
+        rarity: 1,
+        points: 5,
+        habitat: "rural",
+        where: "Campos, cidade, fazendas e locais com gado",
+        description: "O chopim (ou vira-bosta) é um parasita de ninhada — não constrói ninho próprio, mas coloca seus ovos no ninho de outras aves, que criam os filhotes sem saber. Uma fêmea pode botar ovos em mais de 200 ninhos de outras espécies durante a vida! O macho tem brilho metálico azul-violeta no sol.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Shiny_Cowbird_%28Molothrus_bonariensis%29_male.jpg/320px-Shiny_Cowbird_%28Molothrus_bonariensis%29_male.jpg"
+      },
+      {
+        name: "Tico-tico-rei",
+        scientific: "Coryphospingus cucullatus",
+        rarity: 3,
+        points: 20,
+        habitat: "rural",
+        where: "Campos com arbustos, cercas e áreas mais secas",
+        description: "O tico-tico-rei tem uma coroa vermelha viva que o macho exibe quando quer impressionar. Apesar do nome sugestivo, não é aparentado ao tico-tico comum. É uma ave de campos mais secos com arbustos. Forrageia próximo ao chão e tem um canto simples e agudo. Menos comum que o tico-tico em áreas urbanas.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Red-crested_Finch_%28Coryphospingus_cucullatus%29_male.jpg/320px-Red-crested_Finch_%28Coryphospingus_cucullatus%29_male.jpg"
+      },
+      {
+        name: "Coleirinho",
+        scientific: "Sporophila caerulescens",
+        rarity: 2,
+        points: 10,
+        habitat: "rural",
+        where: "Capinzais, áreas com gramíneas e beiras de lavouras",
+        description: "Um dos papa-capins mais comuns do Sul do Brasil, o coleirinho tem uma 'gravata' preta que contrasta com o branco do peito — parece usar um colar, daí o nome. É muito apreciado como pássaro cantor e sofre com o tráfico ilegal. Na natureza, come sementes de capins e é visto em pequenos bandos em beiras de lavouras.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Sporophila_caerulescens_-_Double-collared_Seedeater.jpg/320px-Sporophila_caerulescens_-_Double-collared_Seedeater.jpg"
+      },
+      {
+        name: "Caturrita",
+        scientific: "Myiopsitta monachus",
+        rarity: 2,
+        points: 10,
+        habitat: "city",
+        where: "Árvores altas, praças, plantações e áreas urbanas",
+        description: "A única espécie de papagaio que constrói ninho — e que ninho! Constrói colônias enormes de gravetos em árvores ou postes de eletricidade, com câmaras separadas para cada casal. São barulhentas e muito sociáveis. Originária dos campos sul-americanos, mas agora invasora problemática em partes da Europa e EUA.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Monk-parakeet.jpg/320px-Monk-parakeet.jpg"
+      },
+      {
+        name: "Periquito-de-encontro-amarelo",
+        scientific: "Brotogeris chiriri",
+        rarity: 3,
+        points: 20,
+        habitat: "city",
+        where: "Árvores, parques, pomares e áreas urbanas arborizadas",
+        description: "Pequeninhos e ruidosos, os periquitos-de-encontro-amarelo voam em bandos agitados fazendo muito barulho. Têm um amarelo vivo nas asas que aparece em voo. São muito inteligentes e, quando mantidos como pets (o que é ilegal), aprendem a imitar palavras. Comem sementes, flores e frutos.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Brotogeris_chiriri_-_Yellow-chevroned_Parakeet.jpg/320px-Brotogeris_chiriri_-_Yellow-chevroned_Parakeet.jpg"
+      },
+      {
+        name: "Maritaca-verde",
+        scientific: "Amazona amazonica",
+        rarity: 3,
+        points: 20,
+        habitat: "city",
+        where: "Matas, árvores altas, áreas rurais e alguns parques",
+        description: "A maritaca (papagaio-do-mangue ou curica) é um papagaio médio muito barulhento — seus bandos ao entardecer fazendo bagunça são inconfundíveis! Tem capacidade excepcional de imitar vozes e sons. Em muitas cidades do Sul do Brasil, populações escapadas ou soltas criaram colônias selvagens urbanas.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Amazona_amazonica_-orange-winged_amazon-8a.jpg/320px-Amazona_amazonica_-orange-winged_amazon-8a.jpg"
+      },
+      {
+        name: "Saíra-sete-cores",
+        scientific: "Tangara seledon",
+        rarity: 4,
+        points: 35,
+        habitat: "city",
+        where: "Matas mais preservadas, principalmente áreas de Mata Atlântica",
+        description: "Um dos pássaros mais bonitos do Brasil! A saíra-sete-cores tem plumagem com azul turquesa, verde, preto e marrom dourado — uma combinação espetacular. Vive em bordas de mata e em árvores frutíferas. Ver um exemplar é uma recompensa para quem procura em fragmentos de mata mais preservados. Cada 'cor' tem uma função no mimetismo.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Tangara_seledon_-_Seven-colored_Tanager.jpg/320px-Tangara_seledon_-_Seven-colored_Tanager.jpg"
+      },
+      {
+        name: "Pica-pau-do-campo",
+        scientific: "Colaptes campestris",
+        rarity: 3,
+        points: 20,
+        habitat: "rural",
+        where: "Campos, pastagens, árvores isoladas e cupinzeiros",
+        description: "Diferente dos outros pica-paus, este passa muito tempo no chão! Alimenta-se de cupins e formigas, escavando cupinzeiros com seu bico forte. Tem um padrão de cores marcante: amarelo, preto e vermelho. Quando no chão caminhando, parece mais uma rolinha do que um pica-pau. Frequente em pastos e cerrado.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Campo_Flicker_on_ground.jpg/320px-Campo_Flicker_on_ground.jpg"
+      },
+      {
+        name: "Pica-pau-verde-barrado",
+        scientific: "Colaptes melanochloros",
+        rarity: 3,
+        points: 20,
+        habitat: "city",
+        where: "Bosques, matas, praças arborizadas e pomares",
+        description: "Com barras horizontais pretas e brancas no corpo e topo da cabeça vermelho, este pica-pau é mais discreto que o pica-pau-do-campo. Busca insetos em troncos e galhos de árvores, fazendo os característicos 'tamborilos' (batidas rápidas no tronco). Usa o som para comunicar território e atrair parceiros.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Colaptes_melanochloros%2C_Green-barred_Woodpecker.jpg/320px-Colaptes_melanochloros%2C_Green-barred_Woodpecker.jpg"
+      },
+      {
+        name: "Gavião-carrapateiro",
+        scientific: "Milvago chimachima",
+        rarity: 3,
+        points: 20,
+        habitat: "rural",
+        where: "Fazendas, áreas com cavalos e gado, campos",
+        description: "O gavião-carrapateiro tem hábitos únicos: pousa no dorso de vacas e cavalos para comer carrapatos! Esta relação é benéfica para ambos (mutualismo). Tem plumagem parda com face nua amarela. É oportunista e come desde carrapatos e carniça até lagartos e sapos. Voa baixo em campos abertos.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Milvago_chimachima_-_Yellow-headed_Caracara.jpg/320px-Milvago_chimachima_-_Yellow-headed_Caracara.jpg"
+      },
+      {
+        name: "Gavião-carijó",
+        scientific: "Rupornis magnirostris",
+        rarity: 2,
+        points: 10,
+        habitat: "city",
+        where: "Bairros arborizados, parques e bordas de mata",
+        description: "O gavião-carijó é um dos gaviões mais comuns do Brasil e o mais urbano deles — sobrevive bem em cidades arborizadas. Tem barras alaranjadas no peito (daí 'carijó', que significa listrado). Caça lagartos, pássaros pequenos, roedores e grandes insetos. Seu grito alto e repetido é frequentemente ouvido em bairros arbororizados.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Roadside_Hawk_%28Rupornis_magnirostris%29.jpg/320px-Roadside_Hawk_%28Rupornis_magnirostris%29.jpg"
+      },
+      {
+        name: "Urubu-de-cabeça-preta",
+        scientific: "Coragyps atratus",
+        rarity: 1,
+        points: 5,
+        habitat: "city",
+        where: "Cidade, estradas, lixões e áreas abertas",
+        description: "Os urubus são essenciais para o ecossistema — são 'limpadores da natureza', consumindo carniça e impedindo a proliferação de doenças. Têm estômago com ácido tão forte que destrói bactérias como antraz e botulismo. Localizam comida principalmente pela visão (a cabeça nua facilita limpar após comer). Voam em espirais aproveitando correntes de ar quente.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Coragyps_atratus_-USA-8.jpg/320px-Coragyps_atratus_-USA-8.jpg"
+      },
+      {
+        name: "Urubu-de-cabeça-vermelha",
+        scientific: "Cathartes aura",
+        rarity: 2,
+        points: 10,
+        habitat: "rural",
+        where: "Campos, morros e áreas rurais, geralmente voando alto",
+        description: "Enquanto o urubu-de-cabeça-preta usa a visão, o urubu-de-cabeça-vermelha usa principalmente o olfato — raridade entre aves! Consegue cheirar carniça de grande altitude. Tem cabeça vermelha e voo inconfundível: planeia com as asas em 'V' ligeiramente levantado, balançando levemente. É migratório e percorre grandes distâncias.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Turkey_vulture_-_Calero_Creek_Trail%2C_Campbell%2C_California%2C_USA.jpg/320px-Turkey_vulture_-_Calero_Creek_Trail%2C_Campbell%2C_California%2C_USA.jpg"
+      },
+      {
+        name: "Garça-branca-grande",
+        scientific: "Ardea alba",
+        rarity: 2,
+        points: 10,
+        habitat: "water",
+        where: "Rios, açudes, lagoas e banhados",
+        description: "A maior das garças brancas brasileiras, com até 1 metro de altura. Completamente branca, tem pescoço longo em forma de S e bico amarelo afiado. No período reprodutivo desenvolve plumas ornamentais longas (aigrettes) nas costas — no século XIX essas plumas foram tão procuradas pela moda que a espécie quase foi extinta. É o símbolo do Audubon Society.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Great_Egret_-_Ardea_alba.jpg/320px-Great_Egret_-_Ardea_alba.jpg"
+      },
+      {
+        name: "Garça-vaqueira",
+        scientific: "Bubulcus ibis",
+        rarity: 1,
+        points: 5,
+        habitat: "rural",
+        where: "Pastagens, próximo de bois e cavalos",
+        description: "A garça-vaqueira chegou ao Brasil por conta própria vinda da África em meados do século XX — cruzou o Atlântico! Expandiu-se rapidamente por toda a América. Tem o hábito de acompanhar gado, comendo insetos perturbados pelo pisoteio. No período de cria, desenvolve plumas laranja-douradas na cabeça e no peito.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Cattle_egret_%28Bubulcus_ibis%29_in_Hyderabad%2C_AP_W_IMG_9466.jpg/320px-Cattle_egret_%28Bubulcus_ibis%29_in_Hyderabad%2C_AP_W_IMG_9466.jpg"
+      },
+      {
+        name: "Marreca-pé-vermelho",
+        scientific: "Amazonetta brasiliensis",
+        rarity: 3,
+        points: 20,
+        habitat: "water",
+        where: "Lagoas, açudes e banhados",
+        description: "Uma das marrecas mais bonitas do Brasil! Tem bico vermelho vivo e pés vermelhos inconfundíveis. O macho tem a cabeça avermelhada e o dorso marrom com reflexos. É endêmica da América do Sul. Vive em casais ou pequenos grupos em lagoas e banhados com vegetação. Aninha em ocos de árvores, às vezes longe da água!",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Amazonetta_brasiliensis_%28Brazilian_Teal%29.jpg/320px-Amazonetta_brasiliensis_%28Brazilian_Teal%29.jpg"
+      },
+      {
+        name: "Saracura-do-mato",
+        scientific: "Aramides saracura",
+        rarity: 4,
+        points: 35,
+        habitat: "water",
+        where: "Vegetação densa perto de córregos, banhados e matas úmidas",
+        description: "A saracura-do-mato é uma ave discreta e difícil de ver — fica escondida em vegetação densa próxima à água. Mas seu canto é inconfundível e muito alto: uma série de 'saracura-saracura-saracura' acelerada, frequentemente ouvida ao entardecer. É endêmica do Brasil. Detectá-la (mesmo que pelo canto) é uma conquista!",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Aramides_saracura_-_Slaty-breasted_Wood-Rail.jpg/320px-Aramides_saracura_-_Slaty-breasted_Wood-Rail.jpg"
+      },
+      {
+        name: "Pomba-de-bando",
+        scientific: "Patagioenas picazuro",
+        rarity: 2,
+        points: 10,
+        habitat: "rural",
+        where: "Lavouras, campos, árvores e áreas abertas",
+        description: "A maior pomba do Brasil, bem maior que o pombo doméstico. Tem plumagem cinza com manchas brancas no pescoço que formam um 'colar'. Migra em grandes bandos sazonalmente (por isso 'de bando') em busca de lavouras com grãos. Pode causar prejuízo a plantações quando aparece em número. Seu arulho é profundo e ecoante.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Picazuro_Pigeon_-_Patagioenas_picazuro.jpg/320px-Picazuro_Pigeon_-_Patagioenas_picazuro.jpg"
+      }
+    ];
+
+    // ==========================================================
+    // ESTADO DO JOGO
+    // foundBirds → Set com os nomes dos pássaros encontrados
+    // currentBird → índice do pássaro aberto no modal
+    // currentFilter → filtro ativo na grade
+    // ==========================================================
+    let foundBirds = new Set();
+    let currentBirdIndex = null;
+    let currentFilter = 'all';
+
+    // Calcula a pontuação máxima possível (soma de todos os pontos)
+    const MAX_SCORE = BIRDS.reduce((sum, b) => sum + b.points, 0);
+
+    // ==========================================================
+    // INICIALIZAÇÃO
+    // Carrega o estado salvo no localStorage (se existir)
+    // e renderiza a grade de pássaros
+    // ==========================================================
+    function init() {
+      // Tenta carregar o progresso salvo
+      const saved = localStorage.getItem('passarinhos-found');
+      if (saved) {
+        foundBirds = new Set(JSON.parse(saved));
+      }
+
+      // Atualiza a pontuação máxima na tela
+      document.getElementById('max-score').textContent = MAX_SCORE;
+
+      // Renderiza os cards
+      renderGrid();
+      updateStats();
+    }
+
+    // ==========================================================
+    // SALVAR PROGRESSO
+    // Salva no localStorage para persistir entre sessões
+    // ==========================================================
+    function saveProgress() {
+      localStorage.setItem('passarinhos-found', JSON.stringify([...foundBirds]));
+    }
+
+    // ==========================================================
+    // RENDERIZAR GRADE
+    // Cria ou atualiza todos os cards de pássaros
+    // Aplica o filtro atual antes de mostrar
+    // ==========================================================
+    function renderGrid() {
+      const grid = document.getElementById('birds-grid');
+      grid.innerHTML = ''; // Limpa a grade
+
+      // Filtra a lista conforme o filtro ativo
+      const filtered = BIRDS.filter(bird => {
+        if (currentFilter === 'all')     return true;
+        if (currentFilter === 'found')   return foundBirds.has(bird.name);
+        if (currentFilter === 'notfound')return !foundBirds.has(bird.name);
+        if (currentFilter === 'city')    return bird.habitat === 'city';
+        if (currentFilter === 'rural')   return bird.habitat === 'rural';
+        if (currentFilter === 'water')   return bird.habitat === 'water';
+        return true;
+      });
+
+      // Sem resultados
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="padding:20px; color:#808080; font-size:11px;">Nenhum pássaro encontrado com este filtro.</div>';
+        return;
+      }
+
+      // Cria um card para cada pássaro filtrado
+      filtered.forEach(bird => {
+        const index = BIRDS.indexOf(bird); // Índice real na lista completa
+        const isFound = foundBirds.has(bird.name);
+        const stars = '★'.repeat(bird.rarity) + '☆'.repeat(5 - bird.rarity);
+
+        // Cria o elemento do card
+        const card = document.createElement('div');
+        card.className = `bird-card ${isFound ? 'found' : 'not-found'}`;
+        card.title = isFound ? bird.name : '???';
+
+        // HTML interno do card
+        card.innerHTML = `
+          <div class="bird-img-wrapper">
+            <img class="bird-img" src="${bird.img}" alt="${isFound ? bird.name : 'Pássaro não encontrado'}" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="img-error-placeholder" style="display:none;">🐦</div>
+            <div class="found-badge">✓</div>
+          </div>
+          <div class="bird-name">${isFound ? bird.name : '???'}</div>
+          <div class="bird-rarity" title="Raridade">${stars}</div>
+          <div class="bird-points-badge">${bird.points} pts</div>
+        `;
+
+        // Ao clicar, abre o modal com detalhes
+        card.addEventListener('click', () => openModal(index));
+
+        grid.appendChild(card);
+      });
+    }
+
+    // ==========================================================
+    // ATUALIZAR ESTATÍSTICAS
+    // Atualiza contador, pontuação e barra de progresso
+    // ==========================================================
+    function updateStats() {
+      const total = BIRDS.length;
+      const found = foundBirds.size;
+      const score = BIRDS.filter(b => foundBirds.has(b.name))
+                         .reduce((sum, b) => sum + b.points, 0);
+      const pct = Math.round((found / total) * 100);
+
+      document.getElementById('counter').textContent = `${found} / ${total}`;
+      document.getElementById('score').textContent = score;
+      document.getElementById('progress-bar').style.width = `${pct}%`;
+
+      // Atualiza status bar
+      document.getElementById('status-text').textContent =
+        `${found} de ${total} pássaros encontrados (${pct}%)`;
+
+      // Tela de vitória
+      if (found === total) {
+        document.getElementById('final-score').textContent = score;
+        document.getElementById('win-screen').classList.add('active');
+      }
+    }
+
+    // ==========================================================
+    // ABRIR MODAL
+    // Preenche o modal com os dados do pássaro clicado
+    // ==========================================================
+    function openModal(index) {
+      currentBirdIndex = index;
+      const bird = BIRDS[index];
+      const isFound = foundBirds.has(bird.name);
+      const stars = '★'.repeat(bird.rarity) + '☆'.repeat(5 - bird.rarity);
+
+      // Preenche os campos do modal
+      document.getElementById('modal-title-text').textContent =
+        isFound ? bird.name : 'Pássaro Desconhecido';
+
+      document.getElementById('modal-name').textContent = bird.name;
+      document.getElementById('modal-scientific').textContent = bird.scientific;
+      document.getElementById('modal-rarity-stars').textContent = stars;
+      document.getElementById('modal-points').textContent = `${bird.points} pts`;
+
+      // Imagem: colorida se encontrado, cinza se não
+      const img = document.getElementById('modal-img');
+      img.src = bird.img;
+      img.alt = bird.name;
+      img.className = `modal-img ${isFound ? '' : 'not-found-img'}`;
+
+      // Descrição: mostrada mesmo sem encontrar (é o "card de detalhes")
+      document.getElementById('modal-description').textContent = bird.description;
+
+      // Onde encontrar
+      document.getElementById('modal-where').textContent = bird.where;
+
+      // Status de encontrado
+      const statusEl = document.getElementById('modal-found-status');
+      if (isFound) {
+        statusEl.innerHTML = '<span style="color:#006600; font-weight:bold;">✔ Você já encontrou este pássaro!</span>';
+      } else {
+        statusEl.innerHTML = '<span style="color:#800000;">✖ Ainda não encontrado</span>';
+      }
+
+      // Botão: texto muda conforme estado
+      const btn = document.getElementById('modal-find-btn');
+      if (isFound) {
+        btn.textContent = '✖ Marcar como não encontrado';
+        btn.style.color = '#800000';
+      } else {
+        btn.textContent = '✔ Marcar como encontrado!';
+        btn.style.color = '#006600';
+      }
+
+      // Exibe o modal
+      document.getElementById('modal-overlay').classList.add('active');
+    }
+
+    // ==========================================================
+    // FECHAR MODAL
+    // Fecha ao clicar no botão ou fora da janela
+    // ==========================================================
+    function closeModal(event) {
+      // Fecha apenas se clicar no overlay (fundo), não na janela
+      if (event.target === document.getElementById('modal-overlay')) {
+        closeModalBtn();
+      }
+    }
+
+    function closeModalBtn() {
+      document.getElementById('modal-overlay').classList.remove('active');
+      currentBirdIndex = null;
+    }
+
+    // ==========================================================
+    // TOGGLE ENCONTRADO
+    // Marca ou desmarca o pássaro atual como encontrado
+    // ==========================================================
+    function toggleFound() {
+      if (currentBirdIndex === null) return;
+      const bird = BIRDS[currentBirdIndex];
+
+      if (foundBirds.has(bird.name)) {
+        // Desmarca
+        foundBirds.delete(bird.name);
+      } else {
+        // Marca como encontrado
+        foundBirds.add(bird.name);
+      }
+
+      // Salva no localStorage
+      saveProgress();
+
+      // Atualiza tudo
+      renderGrid();
+      updateStats();
+
+      // Reabre o modal com dados atualizados
+      openModal(currentBirdIndex);
+    }
+
+    // ==========================================================
+    // FILTROS
+    // Muda o filtro ativo e re-renderiza a grade
+    // ==========================================================
+    function setFilter(filter, btnEl) {
+      currentFilter = filter;
+
+      // Atualiza visual dos botões (active/inactive)
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      btnEl.classList.add('active');
+
+      // Atualiza status bar
+      const labels = {
+        all: 'Todos', found: 'Encontrados', notfound: 'Não encontrados',
+        city: 'Cidade', rural: 'Rural', water: 'Água'
+      };
+      document.getElementById('status-filter').textContent = `Filtro: ${labels[filter]}`;
+
+      // Re-renderiza
+      renderGrid();
+    }
+
+    // ==========================================================
+    // REINICIAR JOGO
+    // Limpa todo o progresso
+    // ==========================================================
+    function resetGame() {
+      if (confirm('Tem certeza que quer reiniciar? Todo o progresso será perdido!')) {
+        foundBirds.clear();
+        localStorage.removeItem('passarinhos-found');
+        document.getElementById('win-screen').classList.remove('active');
+        renderGrid();
+        updateStats();
+      }
+    }
+
+    // ==========================================================
+    // INICIAR
+    // ==========================================================
+    init();
+
+  </script>
+</body>
+</html>
